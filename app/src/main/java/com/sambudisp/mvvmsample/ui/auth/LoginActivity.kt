@@ -11,17 +11,23 @@ import com.sambudisp.mvvmsample.util.toast
 
 class LoginActivity : AppCompatActivity(), AuthListener {
 
+    private var binding: ActivityLoginBinding? = null
+    private var viewModel: AuthViewModel? = null
+
     private var rootLayout: ConstraintLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initBindViewModel()
         initComponent()
 
-        val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        val viewModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
-        binding.viewmodel = viewModel
+        viewModel?.authListener = this
+    }
 
-        viewModel.authListener = this
+    private fun initBindViewModel() {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+        viewModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
+        binding?.viewmodel = viewModel
     }
 
     private fun initComponent() {
