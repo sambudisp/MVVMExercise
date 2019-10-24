@@ -30,19 +30,20 @@ class LoginActivity : AppCompatActivity(), AuthListener {
         binding?.viewmodel = viewModel
     }
 
-    private fun initComponent() {
-        rootLayout = findViewById(R.id.root_layout)
-    }
-
     override fun onStarted() {
-        toast("Login Started")
+        progress_bar?.show()
     }
 
-    override fun onSuccess() {
-        toast("Login Success")
+    override fun onSuccess(loginResponse: LiveData<String>) {
+        loginResponse.observe(this, Observer {
+            progress_bar?.hide()
+            toast(it)
+        })
     }
 
     override fun onFailure(message: String) {
+        progress_bar?.hide()
         toast("Login Failed : $message")
     }
+}
 }
